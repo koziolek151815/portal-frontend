@@ -11,6 +11,7 @@ import LoginForm from "./Components/LoginForm/LoginForm";
 import AlertComponent from "./Components/AlertComponent/AlertComponent";
 
 import {useState} from "react";
+import Chat from "./Components/Chat/Chat";
 
 function App() {
   const [errorMessage, updateErrorMessage] = useState(null);
@@ -32,6 +33,9 @@ function App() {
               </Route>
               <Route path="/login">
                 <LoginForm showError={updateErrorMessage}/>
+              </Route>
+              <Route path="/chat">
+                <Chat showError={updateErrorMessage}/>
               </Route>
             </Switch>
             <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage}/>
