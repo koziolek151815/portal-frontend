@@ -88,7 +88,7 @@ function RegistrationForm(props) {
         }
     }
     return(
-        <div className="card mt-3 p-3">
+        <div className="card mt-3 p-3" style={{width:"500px", marginLeft:"auto", marginRight:"auto", height:"auto"}}>
             <form>
                 <div className="form-group text-left">
                     <label htmlFor="exampleInputEmail1">Email address</label>
