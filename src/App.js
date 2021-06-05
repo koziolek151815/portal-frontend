@@ -23,23 +23,21 @@ function App() {
 
           </header>
 
-          <div className="container d-flex flex-column pb-5">
-            <Switch>
-              <Route path="/" exact={true}>
-                <RegistrationForm showError={updateErrorMessage}/>
-              </Route>
-              <Route path="/register">
-                <RegistrationForm showError={updateErrorMessage}/>
-              </Route>
-              <Route path="/login">
-                <LoginForm showError={updateErrorMessage}/>
-              </Route>
-              <Route path="/chat">
-                <Chat showError={updateErrorMessage}/>
-              </Route>
-            </Switch>
-            <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage}/>
-          </div>
+          <Switch>
+            <Route path="/" exact={true}>
+              <RegistrationForm showError={updateErrorMessage}/>
+            </Route>
+            <Route path="/register">
+              <RegistrationForm showError={updateErrorMessage}/>
+            </Route>
+            <Route path="/login">
+              <LoginForm showError={updateErrorMessage}/>
+            </Route>
+            <Route path="/chat">
+              <Chat showError={updateErrorMessage}/>
+            </Route>
+          </Switch>
+          <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage}/>
         </div>
       </Router>
   );
