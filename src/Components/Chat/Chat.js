@@ -50,7 +50,7 @@ class Chat extends React.Component {
             switch (msg.type)
             {
                 case "DISCONNECTED":
-                    this.setState({messages: [...this.state.messages, {type:"infoMessage", content:"Other user has disconnected!"}]})
+                    this.setState({messages: [...this.state.messages, {type:"infoMessage", content:"Chat finished!"}]})
                     this.setState({chatState: ChatStateEnum.ready})
                     break;
                 case "FOUND":
@@ -71,7 +71,7 @@ class Chat extends React.Component {
 
     onConnect = ()=>{
         this.setState({messages: [{type:"infoMessage",  content:"Connected to the server!"}]})
-        this.setState({chatState: ChatStateEnum.ready})
+        this.searchForChat();
     }
 
     onDisconnect = () =>{
@@ -80,9 +80,21 @@ class Chat extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
+        //Scroll down
         const tmp = this.messageContainerRef.current;
-
         tmp.scrollTop = tmp.scrollHeight;
+
+        //Try to stop someone from leaving if they are currently chatting with someone
+        if(this.state.chatState === ChatStateEnum.chatting)
+        {
+            window.onbeforeunload = function (e) {
+                return 'You are still chatting with someone! Are you sure you want to leave?';
+            };
+        }
+        else
+        {
+            window.onbeforeunload = null;
+        }
     }
 
 
@@ -107,7 +119,7 @@ class Chat extends React.Component {
         switch (this.state.chatState)
         {
             case ChatStateEnum.ready:
-                return <button onClick={this.searchForChat}>Search for chat</button>
+                return "Ready to search for chat!"
             case ChatStateEnum.connecting:
                 return "Connecting to the server!";
             case ChatStateEnum.searching:
@@ -116,6 +128,34 @@ class Chat extends React.Component {
                 return null;
         }
     }
+
+    getButtonString()
+    {
+        switch (this.state.chatState)
+        {
+            case ChatStateEnum.chatting:
+                return "Disconnect";
+            case ChatStateEnum.ready:
+                return "Search";
+            default:
+                return "Please wait!";
+        }
+    }
+
+    buttonClicked = ()=>{
+        switch (this.state.chatState)
+        {
+            case ChatStateEnum.chatting:
+                this.disconnectFromChat();
+                break;
+            case ChatStateEnum.ready:
+                this.searchForChat();
+                break;
+            default:
+                return null;
+        }
+    }
+
 
     render() {
         return (
@@ -141,7 +181,9 @@ class Chat extends React.Component {
                     <textarea style={{display:"inline-block", verticalAlign:"middle", height:"100%", width:"calc(100% - 150px)", resize:"none"}}
                               type="text" value={this.state.value} disabled={this.state.chatState!==ChatStateEnum.chatting} ref={this.textAreaRef} onKeyDown={this.onEnterPress}/>
                     <input style={{display:"inline-block", verticalAlign:"middle",height:"100%", width:"150px"}}
-                           type="submit" value="Send" disabled={this.state.chatState!==ChatStateEnum.chatting}/>
+                           type="submit" value={this.getButtonString()}
+                           disabled={this.state.chatState!==ChatStateEnum.chatting&&this.state.chatState!==ChatStateEnum.ready}
+                           onClick={this.buttonClicked}/>
                 </form>
             </div>
         );

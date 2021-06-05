@@ -12,6 +12,7 @@ import AlertComponent from "./Components/AlertComponent/AlertComponent";
 
 import {useState} from "react";
 import Chat from "./Components/Chat/Chat";
+import Header from "./Components/Header/Header";
 
 function App() {
   const [errorMessage, updateErrorMessage] = useState(null);
@@ -19,9 +20,7 @@ function App() {
   return (
       <Router>
         <div className="App">
-          <header>
-
-          </header>
+          <Header/>
 
           <Switch>
             <Route path="/" exact={true}>
