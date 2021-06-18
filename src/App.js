@@ -10,9 +10,13 @@ import RegistrationForm from "./Components/RegistrationForm/RegistrationForm";
 import LoginForm from "./Components/LoginForm/LoginForm";
 import AlertComponent from "./Components/AlertComponent/AlertComponent";
 
-import {useState} from "react";
+import React, {useState} from "react";
 import Chat from "./Components/Chat/Chat";
 import Header from "./Components/Header/Header";
+import PrivateRoute from "./Components/PrivateRoute";
+import MainPage from "./Components/MainPage/MainPage";
+import AddAd from "./Components/AddAd/AddAd";
+import UpdateAd from "./Components/UpdateAd/UpdateAd";
 
 function App() {
   const [errorMessage, updateErrorMessage] = useState(null);
@@ -21,7 +25,6 @@ function App() {
       <Router>
         <div className="App">
           <Header/>
-
           <Switch>
             <Route path="/" exact={true}>
               <RegistrationForm showError={updateErrorMessage}/>
@@ -35,6 +38,11 @@ function App() {
             <Route path="/chat">
               <Chat showError={updateErrorMessage}/>
             </Route>
+            <Route path="/home">
+              <MainPage/>
+            </Route>
+            <PrivateRoute exact path="/addAd" component={<AddAd showError={updateErrorMessage}/>} />
+            <PrivateRoute path="/updateAd/:id" component={<UpdateAd showError={updateErrorMessage}/>} />
           </Switch>
           <AlertComponent errorMessage={errorMessage} hideError={updateErrorMessage}/>
         </div>
