@@ -32,6 +32,7 @@ function LoginForm(props) {
                         'successMessage' : 'Login successful. Redirecting to home page..'
                     }))
                     login(response.data['token']);
+                    window.location = "/home"
                     props.showError(null)
                 }
 
