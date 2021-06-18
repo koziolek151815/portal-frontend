@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import jwt from 'jwt-decode'
 import { withRouter } from "react-router-dom";
+import {login} from "../../Utility/Authorization";
 
 
 function LoginForm(props) {
@@ -31,12 +31,7 @@ function LoginForm(props) {
                         ...prevState,
                         'successMessage' : 'Login successful. Redirecting to home page..'
                     }))
-                    localStorage.setItem("token", response.data['token']);
-                    console.log(localStorage.getItem("token"));
-                    const decoded = jwt(localStorage.getItem('token'));
-                    localStorage.setItem("roles", decoded['roles']);
-                    console.log(localStorage.getItem('roles'));
-                    redirectToHome();
+                    login(response.data['token']);
                     props.showError(null)
                 }
 
@@ -46,12 +41,8 @@ function LoginForm(props) {
                 console.log(error);
             });
     }
-    const redirectToHome = () => {
-        props.history.push('/home');
-    }
-    const redirectToRegister = () => {
-        props.history.push('/register');
-    }
+
+
     return(
         <div className="card mt-3 p-3" style={{width:"500px", marginLeft:"auto", marginRight:"auto", height:"auto"}}>
             <form>
@@ -86,7 +77,7 @@ function LoginForm(props) {
             </form>
             <div className="registerMessage">
                 <span>Dont have an account? </span>
-                <span className="loginText" onClick={() => redirectToRegister()}>Register</span>
+                <a className="loginText" href="/register">Register</a>
             </div>
             <div className="alert alert-success mt-2" style={{display: state.successMessage ? 'block' : 'none' }} role="alert">
                 {state.successMessage}

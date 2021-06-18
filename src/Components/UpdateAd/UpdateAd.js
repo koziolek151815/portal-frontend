@@ -3,6 +3,7 @@ import axios from "axios";
 import './UpdateAd.css';
 import {withRouter} from "react-router-dom";
 import jwt from "jwt-decode";
+import {Button} from "react-bootstrap";
 
 
 class UpdateAd extends React.Component {
@@ -16,7 +17,8 @@ class UpdateAd extends React.Component {
         this.submitButtonRef = React.createRef();
         this.textAreaRef = React.createRef();
         this.token = localStorage.getItem('token');
-        this.minDescriptionLength = 5;
+        this.minDescriptionLength = 1;
+        this.maxDescriptionLength = 1000;
         if (localStorage.getItem('token')) {
             this.currentUser = jwt(localStorage.getItem('token'))['sub'];
         }
@@ -66,7 +68,11 @@ class UpdateAd extends React.Component {
         event.preventDefault();
         var error = false;
         if (this.state.description.length < this.minDescriptionLength) {
-            this.props.showError('Description is too short!');
+            this.props.showError('Write something!');
+            error = true;
+        }
+        if (this.state.description.length > this.maxDescriptionLength) {
+            this.props.showError(`Content is too long! (${this.state.description.length }/${this.maxDescriptionLength} characters)`);
             error = true;
         }
         if (!error) {
@@ -78,17 +84,15 @@ class UpdateAd extends React.Component {
     render() {
         return (
             <div className="Post container my-2 border rounded">
-                <div className="col-md-12 py-2 blogShort">
+                <div className="col-md-12 py-2">
                     {this.state.enableEdit ? <>
-                        <h1>Write new ad. Tell sth about yourself!!!</h1>
+                        <h4>Editing your ad</h4>
                         <form>
                         <textarea ref={this.textAreaRef} id={"description"} value={this.state.description}
                                   placeholder={this.state.description}
                                   onChange={this.handleDescriptionChange}/>
-                            <button ref={this.submitButtonRef}
-                                    className={"btn btn-default text-white bg-dark float-right"}
-                                    id="addPostButton" onClick={this.addPost}>Submit
-                            </button>
+                            <Button ref={this.submitButtonRef} className="float-right" onClick={this.addPost}>Submit</Button>
+                            <div style={{clear:"both"}}/>
                         </form>
                     </> : <h1>You cannot edit this</h1>}
                 </div>

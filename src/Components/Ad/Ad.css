@@ -1,5 +1,4 @@
 .Post{
+    text-align: left;
     background-color: mintcream;
 }
-
-.blogShort{ border-bottom:1px solid #ddd;}

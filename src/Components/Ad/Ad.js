@@ -3,28 +3,25 @@ import './Ad.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import {formatDate} from "../../Utility/Date";
-
+import {Button} from "react-bootstrap";
 
 class Ad extends React.Component {
 
     render() {
         return (
-            <div className="Post container my-2 border rounded">
-                <div className="col-md-12 py-2 blogShort">
+            <div className="Post m-2 p-2 border rounded blogShort">
                     <span className="float-left"> Author: {this.props.ad.user.username}</span>
-                    <span className="float-right">{formatDate(this.props.ad.adCreatedDate)}</span><br/>
-                    <article><p>
+                    <span className="float-right">{formatDate(this.props.ad.adCreatedDate)}</span>
+                    <div style={{clear:"both"}}/>
+
+                    <article><p style={{wordWrap:"break-word"}}>
                         {this.props.ad.content}
                     </p></article>
                     {this.props.ad.user.email === this.props.currentUser ? <>
-                        <button onClick={() => this.props.deleteAd(this.props.ad.id)}
-                                className={"btn btn-default btn-danger float-right"}>Delete
-                        </button>
-                        <a className="btn btn-default btn-info float-right"
-                        href={`/updateAd/${this.props.ad.id}`}>Edit</a>
+                        <Button className="float-right" variant="danger" onClick={() => this.props.deleteAd(this.props.ad.id)}>Delete</Button>
+                        <Button className="float-right" href={`/updateAd/${this.props.ad.id}`}>Edit</Button>
+                        <div style={{clear:"both"}}/>
                     </> : null}
-                    <br/>
-                </div>
             </div>
         );
     };
